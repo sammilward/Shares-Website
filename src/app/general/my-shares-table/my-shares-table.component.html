@@ -1,0 +1,36 @@
+<app-currency-warning [currencyDown]='currencyDown'></app-currency-warning>
+
+<div class='card'>
+    <div class='card-header'>
+        <h2>{{pageTitle}}</h2>
+    </div>
+    <div class='card-body'> 
+        <div class='table-responsive' *ngIf='ownedShares && ownedShares.length'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>Quantity you own</th>
+                        <th>Total Value</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let ownedShare of ownedShares'>
+                        <td [routerLink]="['/general/share', ownedShare.share.companySymbol]">{{ownedShare.share.companySymbol}}</td>
+                        <td [routerLink]="['/general/share', ownedShare.share.companySymbol]">{{ownedShare.share.companyName}}</td>
+                        <td>{{ownedShare.share.value | specificCurrency: ownedShare.share.currency }}</td>
+                        <td>{{ownedShare.quantity}}</td>
+                        <td>{{ownedShare.share.value * ownedShare.quantity | specificCurrency: ownedShare.share.currency }}</td>
+                        <td>{{ownedShare.share.lastUpdated | date: 'medium' : 'UTC +5' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>

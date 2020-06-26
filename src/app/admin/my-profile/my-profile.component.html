@@ -1,0 +1,71 @@
+<app-currency-warning [currencyDown]='currencyDown'></app-currency-warning>
+<div class='card' *ngIf='singleUserResponse'>
+    <div class="card-header">
+        <h3 class='text-center'>Your Settings</h3>
+    </div>
+    <div class="card-body"> 
+        <p class='text-center'>Username</p>
+        <p class='text-center' >{{singleUserResponse.result.username}}</p>
+        <p class='text-center top-buffer'>Preffered Currency</p>
+        <input type='text'
+                [(ngModel)]='newPrefferedCurrency'>
+        <div class='text-center top-buffer'>
+            <button type="button"
+                    (click)='changeCurrency()'>
+                Change Currency
+            </button>
+        </div>
+        <p class='text-center'>{{changeCurrencyErrorMessage}}</p>
+    </div>
+</div>
+
+<div class='card'>
+    <div class="card-header">
+        <h3 class='text-center'>Add Admin User</h3>
+    </div>
+    <div class="card-body">
+        <p class='text-center'>Username</p>
+        <input type='text'
+                [(ngModel)]='newAdminUsername'>
+        <p class='text-center top-buffer'>Password</p>
+        <input type='text'
+                [(ngModel)]='newAdminPassword'>
+        <p class='text-center top-buffer'>Preffered Currency</p>
+        <input type='text'
+                [(ngModel)]='newAdminPrefferedCurrency'>
+        <div class='text-center top-buffer'>
+            <button type="button"
+                    (click)='createAdminUser()'>
+                Create
+            </button>
+        </div>
+        <p class='text-center'>{{addAdminErrorMessage}}</p>
+    </div>
+</div>
+
+<div class='card' *ngIf='allAdminsResponse'>
+    <div class="card-header">
+        <h3 class='text-center'>Admin Accounts</h3>
+    </div>
+    <div class="card-body"> 
+        <div class='table-responsive'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Preffered Currency</th>
+                        <th>Delete?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let admin of allAdminsResponse.result'>
+                        <td>{{admin.username}}</td>
+                        <td>{{admin.prefferedCurrency}}</td>
+                        <td><button (click)='deleteUser(admin.username)'>Delete User</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p *ngIf='deleteAdminErrorMessage'>{{deleteAdminErrorMessage}}</p>
+    </div>
+</div>

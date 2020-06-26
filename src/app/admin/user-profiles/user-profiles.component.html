@@ -1,0 +1,77 @@
+<app-currency-warning [currencyDown]='currencyDown'></app-currency-warning>
+
+<div class='card'>
+    <div class='card-header'>
+        <h2>User Profiles</h2>
+    </div>
+    <div class='card-body'>
+        <div>Filter by:</div>
+        <div class='row'>
+            <p class='col-md-2'>Username</p>
+            <p class='col-md-2'>Preffered Currency</p>
+            <p class='col-md-2'>Min Wallet Value</p>
+            <p class='col-md-2'>Max Wallet Value</p>            
+        </div>
+        <div class='row'>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input
+                    class='col-md-10 offset-md-1' 
+                    type='text'
+                    [(ngModel)]='usernameFilter'/>
+                </div>
+            </div>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='prefferedCurrenyFilter'/>
+                </div>
+            </div>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='minWalletValueFilter'/>
+                </div>
+            </div>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='maxWalletValueFilter'/>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <button class='col-md-2 offset-md-2 button-spaced'
+            (click)='filter()'>Filter</button>
+            <button class='col-md-2 offset-md-4 button-spaced'
+            (click)='removeFilters()'>Remove Filters</button>
+        </div>
+        <div class='table-responsive' *ngIf='usersResponse'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Wallet Value</th>
+                        <th>Preffered Currency</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let user of usersResponse.result'>
+                        <td [routerLink]="['/admin/userdetails', user.username]">{{user.username}}</td>
+                        <td>{{user.walletValue | specificCurrency: usersResponse.currency}}</td>
+                        <td>{{user.prefferedCurrency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>

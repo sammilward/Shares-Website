@@ -1,0 +1,134 @@
+<app-currency-warning [currencyDown]='currencyDown'></app-currency-warning>
+
+<div class='row'>
+    <div class='col-md-6'>
+        <div class='card h-100' *ngIf='singleUserResponse'>
+            <div class="card-header">
+                <h3 class='text-center'>Details</h3>
+            </div>
+            <div class="card-body"> 
+                <p class='text-center'>Username</p>
+                <p class='text-center' >{{singleUserResponse.result.username}}</p>
+                <p class='text-center top-buffer'>Preffered Currency</p>
+                <input type='text'
+                        [(ngModel)]='newPrefferedCurrency'>
+                <div class='text-center top-buffer'>
+                    <button type="button"
+                            (click)='changeCurrency()'>
+                        Change Currency
+                    </button>
+                </div>
+                <p class='text-center'>{{changeCurrencyErrorMessage}}</p>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-6' *ngIf='singleUserResponse'>
+        <div class='card h-100'>
+            <div class="card-header">
+                <h3 class='text-center'>Wallet</h3>
+            </div>
+            <div class="card-body" *ngIf='singleUserResponse'>
+                <p class='text-center'>Current Wallet Value</p>
+                <p class='text-center'>{{singleUserResponse.result.walletValue | specificCurrency: singleUserResponse.currency }}</p>
+    
+                <p class='text-center top-buffer'>Withdraw</p>
+                <div class='row justify-content-md-center'>
+                    <p class='col-md-3 offset-md-3'>{{singleUserResponse.currency}}</p>
+                    <input class='col-md-3'
+                        type='text'
+                        [(ngModel)]='withdrawAmount'>
+                    <div class='col-md-3'></div>
+                </div>
+                <div class='text-center top-buffer'>
+                    <button type="button"
+                            (click)='withdraw()'>
+                        Withdraw
+                    </button>
+                </div>         
+    
+                <p class='text-center top-buffer'>Deposit</p>
+                <div class='row justify-content-md-center'>
+                    <p class='col-md-3 offset-md-3'>{{singleUserResponse.currency}}</p>
+                    <input class='col-md-3'
+                        type='text'
+                        [(ngModel)]='depositAmount'>
+                    <div class='col-md-3'></div>
+                </div>
+                <div class='text-center top-buffer'>
+                    <button type="button"
+                            (click)='deposit()'>
+                        Deposit
+                    </button>
+                </div>      
+    
+                <p class='text-center'>{{walletErrorMessage}}</p>
+            </div>
+        </div>
+    </div>  
+</div>
+
+<div class='card' *ngIf='purchaseResponse'>
+    <div class='card-header'>
+        <h2>Purchase History</h2>
+    </div>
+    <div class='card-body'>
+        <div class='table-responsive'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Company Symbol</th>
+                        <th>Value of share at the time</th>
+                        <th>Quantity you purchased</th>
+                        <th>Total Purchase Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let purchase of purchaseResponse.result'>
+                        <td>{{purchase.purchaseTime | date: 'medium' }}</td>
+                        <td [routerLink]="['/general/share', purchase.companySymbol]">{{purchase.companySymbol}}</td>
+                        <td>{{(purchase.totalValue / purchase.quantity) | specificCurrency: purchaseResponse.currency }}</td>
+                        <td>{{purchase.quantity}}</td>
+                        <td>{{purchase.totalValue | specificCurrency: purchaseResponse.currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>
+
+<div class='card' *ngIf='saleResponse'>
+    <div class='card-header'>
+        <h2>Sales History</h2>
+    </div>
+    <div class='card-body'>
+        <div class='table-responsive'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Company Symbol</th>
+                        <th>Value of share at the time</th>
+                        <th>Quantity you sold</th>
+                        <th>Total Sale Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let sale of saleResponse.result'>
+                        <td>{{sale.saleTime | date: 'medium' }}</td>
+                        <td [routerLink]="['/general/share', sale.companySymbol]">{{sale.companySymbol}}</td>
+                        <td>{{(sale.totalValue / sale.quantity) | specificCurrency: saleResponse.currency }}</td>
+                        <td>{{sale.quantity}}</td>
+                        <td>{{sale.totalValue | specificCurrency: saleResponse.currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>

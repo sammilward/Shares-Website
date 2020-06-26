@@ -1,0 +1,23 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+html, body { height: 100%; }
+
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+button {
+    background-color: #3F51B5;
+    border-color: #3F51B5;
+    color: white
+}
+
+div.card-header {
+    font-size: large;
+   }
+   
+div.card {
+    margin-top: 10px
+}
+   
+.table {
+    margin-top: 10px
+}

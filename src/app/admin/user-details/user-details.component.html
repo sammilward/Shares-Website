@@ -1,0 +1,115 @@
+<app-currency-warning [currencyDown]='currencyDown'></app-currency-warning>
+<div class='card' *ngIf='singleUserResponse'>
+    <div class="card-header">
+        <h3 class='text-center'>Details</h3>
+    </div>
+    <div class="card-body"> 
+        <p class='text-center'>Username</p>
+        <p class='text-center' >{{singleUserResponse.result.username}}</p>
+        <p class='text-center'>Wallet Value</p>
+        <p class='text-center' >{{singleUserResponse.result.walletValue | specificCurrency: singleUserResponse.currency }}</p>
+        <p class='text-center top-buffer'>Preffered Currency</p>
+        <p class='text-center'>{{singleUserResponse.result.prefferedCurrency}}</p>
+    </div>
+</div>
+
+<div class='card' *ngIf='ownedShares'>
+    <div class='card-header'>
+        <h2>Owned Shares</h2>
+    </div>
+    <div class='card-body'>
+        <div class='table-responsive' *ngIf='ownedShares && ownedShares.length'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>Quantity owned</th>
+                        <th>Total Value</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let ownedShare of ownedShares'>
+                        <td [routerLink]="['/admin/share', ownedShare.share.companySymbol]">{{ownedShare.share.companySymbol}}</td>
+                        <td [routerLink]="['/admin/share', ownedShare.share.companySymbol]">{{ownedShare.share.companyName}}</td>
+                        <td>{{ownedShare.share.value | specificCurrency: ownedShare.share.currency }}</td>
+                        <td>{{ownedShare.quantity}}</td>
+                        <td>{{ownedShare.share.value * ownedShare.quantity | specificCurrency: ownedShare.share.currency }}</td>
+                        <td>{{ownedShare.share.lastUpdated | date: 'medium' : 'UTC +5' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>    
+</div>
+
+<div class='card' *ngIf='purchaseResponse'>
+    <div class='card-header'>
+        <h2>Purchase History</h2>
+    </div>
+    <div class='card-body'>
+        <div class='table-responsive'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Company Symbol</th>
+                        <th>Value of share at the time</th>
+                        <th>Quantity purchased</th>
+                        <th>Total Purchase Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let purchase of purchaseResponse.result'>
+                        <td>{{purchase.purchaseTime | date: 'medium' }}</td>
+                        <td [routerLink]="['/admin/share', purchase.companySymbol]">{{purchase.companySymbol}}</td>
+                        <td>{{(purchase.totalValue / purchase.quantity) | specificCurrency: purchaseResponse.currency }}</td>
+                        <td>{{purchase.quantity}}</td>
+                        <td>{{purchase.totalValue | specificCurrency: purchaseResponse.currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>
+
+<div class='card' *ngIf='saleResponse'>
+    <div class='card-header'>
+        <h2>Sales History</h2>
+    </div>
+    <div class='card-body'>
+        <div class='table-responsive'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Company Symbol</th>
+                        <th>Value of share at the time</th>
+                        <th>Quantity sold</th>
+                        <th>Total Sale Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let sale of saleResponse.result'>
+                        <td>{{sale.saleTime | date: 'medium' }}</td>
+                        <td [routerLink]="['/admin/share', sale.companySymbol]">{{sale.companySymbol}}</td>
+                        <td>{{(sale.totalValue / sale.quantity) | specificCurrency: saleResponse.currency }}</td>
+                        <td>{{sale.quantity}}</td>
+                        <td>{{sale.totalValue | specificCurrency: saleResponse.currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>

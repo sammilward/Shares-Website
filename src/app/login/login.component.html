@@ -1,0 +1,66 @@
+<mat-toolbar color="primary" class="navbar">
+    <img
+        width="55"
+        alt="Simple Shares Logo"
+        src="assets/SimpleSharesLogo.png"
+    />
+    <h1>Simple Shares</h1>
+</mat-toolbar>
+
+<div class='container'>
+
+    <div class="error" *ngIf='apiDown'>
+        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+        The website is currently unavailable. Please try again later.
+    </div>
+
+    <div class='row'>
+        <div class='col-md-6'>
+            <div class='card h-100'>
+                <div class="card-header">
+                    <h3 class='text-center'>Login</h3>
+                </div>
+                <div class="card-body">
+                    <p class='text-center'>Username</p>
+                    <input type='text'
+                            [(ngModel)]='loginUsername'>
+                    <p class='text-center top-buffer'>Password</p>
+                    <input type='text'
+                            [(ngModel)]='loginPassword'>
+                    <div class='text-center top-buffer'>
+                        <button type="button"
+                                (click)='login()'>
+                            Login
+                        </button>
+                    </div>
+                    <p class='text-center'>{{loginErrorMessage}}</p>
+                </div>
+            </div>
+        </div>
+        <div class='col-md-6'>
+            <div class='card h-100'>
+                <div class="card-header">
+                    <h3 class='text-center'>Register</h3>
+                </div>
+                <div class="card-body">
+                    <p class='text-center'>Username</p>
+                    <input type='text'
+                            [(ngModel)]='registerUsername'>
+                    <p class='text-center top-buffer'>Password</p>
+                    <input type='text'
+                            [(ngModel)]='registerPassword'>
+                    <p class='text-center top-buffer'>Preffered Currency</p>
+                    <input type='text'
+                            [(ngModel)]='registerPrefferedCurrency'>
+                    <div class='text-center top-buffer'>
+                        <button type="button"
+                                (click)='register()'>
+                            Register
+                        </button>
+                    </div>
+                    <p class='text-center'>{{registerErrorMessage}}</p>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>

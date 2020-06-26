@@ -1,0 +1,100 @@
+<app-currency-warning [currencyDown]='currencyDown'></app-currency-warning>
+
+<div class='card'>
+    <div class='card-header'>
+        <h2>{{pageTitle}}</h2>
+    </div>
+    <div class='card-body'>
+        <div>Filter by:</div>
+        <div class='row'>
+            <p class='col-md-2'>Company Symbol</p>
+            <p class='col-md-2'>Company Name</p>
+            <p class='col-md-2'>Min Value</p>
+            <p class='col-md-2'>Max Value</p>
+            <p class='col-md-2'>Min Quantity</p>
+            <p class='col-md-2'>Max Quantity</p>
+        </div>
+        <div class='row'>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='companySymbolFilter'/>
+                </div>
+            </div>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='companyNameFilter'/>
+                </div>
+            </div>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='minValueFilter'/>
+                </div>
+            </div>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='maxValueFilter'/>
+                </div>
+            </div>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='minQuantityFilter'/>
+                </div>
+            </div>
+            <div class='col-md-2'>
+                <div class='row'>
+                    <input 
+                    class='col-md-10 offset-md-1'
+                    type='text'
+                    [(ngModel)]='maxQuantityFilter'/>
+                </div>
+            </div>
+        </div>
+        <div class='row'>
+            <button class='col-md-2 offset-md-2 button-spaced'
+            (click)='filter()'>Filter</button>
+            <button class='col-md-2 offset-md-4 button-spaced'
+            (click)='removeFilters()'>Remove Filters</button>
+        </div>
+        <div class='table-responsive' *ngIf='shares && shares.length'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Symbol</th>
+                        <th>Name</th>
+                        <th>Value</th>
+                        <th>Quantity</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let share of shares'>
+                        <td [routerLink]="['/general/share', share.companySymbol]">{{share.companySymbol}}</td>
+                        <td [routerLink]="['/general/share', share.companySymbol]">{{share.companyName}}</td>
+                        <td>{{share.value | specificCurrency: share.currency }}</td>
+                        <td>{{share.numberOfShares}}</td>
+                        <td>{{share.lastUpdated | date: 'medium' : 'UTC +5' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h5 class='col-md-4 offset-md-5' *ngIf='!shares'>No shares found</h5>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>

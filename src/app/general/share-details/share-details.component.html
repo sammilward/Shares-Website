@@ -1,0 +1,138 @@
+<app-currency-warning [currencyDown]='currencyDown'></app-currency-warning>
+
+<p class='text-center top-buffer' *ngIf='shareErrorMessage'>{{shareErrorMessage}}</p>
+<p class='text-center top-buffer' *ngIf='userErrorMessage'>{{userErrorMessage}}</p>
+<p class='text-center top-buffer' *ngIf='purchaseErrorMessage'>{{purchaseErrorMessage}}</p>
+<p class='text-center top-buffer' *ngIf='makeSaleErrorMessage'>{{makeSaleErrorMessage}}</p>
+<p class='text-center top-buffer' *ngIf='getSalesErrorMessage'>{{getSalesErrorMessage}}</p>
+<p class='text-center top-buffer' *ngIf='getPurchaseErrorMessage'>{{getPurchaseErrorMessage}}</p>
+
+<div class='row'>
+    <div class='col-md-6' *ngIf='shareResponse && userResponse'>
+        <div class='card h-100'>
+            <div class="card-header">
+                <h3 class='text-center'>{{shareResponse.result.companySymbol}}</h3>
+            </div>
+            <div class="card-body">  
+                <h4 class='text-center top-buffer'>{{shareResponse.result.companyName}}</h4>
+                <p class='text-center top-buffer'>Number of shares available</p>
+                <p class='text-center top-buffer'>{{shareResponse.result.numberOfShares}}</p>
+                <p class='text-center top-buffer'>Value</p>
+                <p class='text-center top-buffer'>{{shareResponse.result.value | specificCurrency: shareResponse.currency }}</p>
+                <p class='text-center top-buffer'>Last updated at:</p>
+                <p class='text-center top-buffer'>{{shareResponse.result.lastUpdated | date: 'medium' : 'UTC +5' }}</p>
+            </div>
+        </div>
+    </div>
+    <div class='col-md-6' *ngIf='shareResponse && userResponse'>
+        <div class='card h-100'>
+            <div class="card-header">
+                <h3 class='text-center'>Transactions</h3>
+            </div>
+            <div class="card-body">
+                <div *ngIf='userResponse'>
+                    <p class='text-center'>Current Wallet Value</p>
+                    <p class='text-center'>{{userResponse.result.walletValue | specificCurrency: userResponse.currency }}</p>
+                </div>
+    
+                <p class='text-center top-buffer' *ngIf='userShare && shareResponse'>You own: {{userShare.quantity ? userShare.quantity : '0' }} shares of {{shareResponse.result.companySymbol}}</p>
+    
+                <p class='text-center top-buffer'>Purchase shares</p>
+                <div class='row justify-content-md-center'>
+                    <input class='col-md-3'
+                        type='text'
+                        [(ngModel)]='purchaseQuantity'>
+                </div>
+                <p class='text-center top-buffer' *ngIf='totalPurchaseCost'>This will cost {{totalPurchaseCost | specificCurrency: shareResponse.currency }}</p>
+                <div class='text-center top-buffer'>
+                    <button type="button"
+                            (click)='purchase()'>
+                        Purchase
+                    </button>
+                </div>         
+    
+                <p class='text-center top-buffer'>Sell Shares</p>
+                <div class='row justify-content-md-center'>
+                    <input class='col-md-3'
+                        type='text'
+                        [(ngModel)]='sellQuantity'>
+                </div>
+                <p class='text-center top-buffer' *ngIf='totalSaleAmount'>This will make {{totalSaleAmount | specificCurrency: shareResponse.currency }}</p>
+                <div class='text-center top-buffer'>
+                    <button type="button"
+                            (click)='sell()'>
+                        Sell
+                    </button>
+                </div>     
+            </div>
+        </div>
+    </div>  
+</div>
+
+<div class='card' *ngIf='purchaseResponse'>
+    <div class='card-header'>
+        <h2>Your Purchase History</h2>
+    </div>
+    <div class='card-body'>
+        <div class='table-responsive'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Company Symbol</th>
+                        <th>Value of share at the time</th>
+                        <th>Quantity you purchased</th>
+                        <th>Total Purchase Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let purchase of purchaseResponse.result'>
+                        <td>{{purchase.purchaseTime | date: 'medium' }}</td>
+                        <td>{{purchase.companySymbol}}</td>
+                        <td>{{(purchase.totalValue / purchase.quantity) | specificCurrency: purchaseResponse.currency }}</td>
+                        <td>{{purchase.quantity}}</td>
+                        <td>{{purchase.totalValue | specificCurrency: purchaseResponse.currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>
+
+<div class='card' *ngIf='saleResponse'>
+    <div class='card-header'>
+        <h2>Your Sales History</h2>
+    </div>
+    <div class='card-body'>
+        <div class='table-responsive'>
+            <table class='table'>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Company Symbol</th>
+                        <th>Value of share at the time</th>
+                        <th>Quantity you sold</th>
+                        <th>Total Sale Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor='let sale of saleResponse.result'>
+                        <td>{{sale.saleTime | date: 'medium' }}</td>
+                        <td>{{sale.companySymbol}}</td>
+                        <td>{{(sale.totalValue / sale.quantity) | specificCurrency: saleResponse.currency }}</td>
+                        <td>{{sale.quantity}}</td>
+                        <td>{{sale.totalValue | specificCurrency: saleResponse.currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf = 'errorMessage'>
+            <h5>{{errorMessage}}</h5>
+        </div>
+    </div>
+</div>
+
+<app-news [topic]='shareResponse.result.companyName'></app-news>
